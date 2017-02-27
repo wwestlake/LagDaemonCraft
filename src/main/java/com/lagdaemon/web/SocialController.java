@@ -27,7 +27,6 @@ public class SocialController {
 	private LinkedIn linkedin;
 	private ConnectionRepository connectionRepository;
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-	private @Autowired Model model;
 	
 	public SocialController(Facebook facebook, Twitter twitter, LinkedIn linkedin, ConnectionRepository connectionRepository) {
 		//this.repo = repo;
@@ -94,26 +93,5 @@ public class SocialController {
     	log.info("handler for facebook hash fix");
     	return "redirect:/connect/facebook";
     }
-
-    
-    
-    @Bean
-    public ConnectController connectController(ConnectionFactoryLocator connectionFactoryLocator,
-            ConnectionRepository connectionRepository, NativeWebRequest request) {
-
-        ConnectController controller = new ConnectController(connectionFactoryLocator,
-                connectionRepository);
-            String url = "http://dev-machine.com:8080/";
-            controller.setApplicationUrl(url) ;
-
-            String status = controller.connectionStatus(request, model);
-            
-            log.info(status);
-            
-            
-            //controller.setViewPath(viewPath);
-            return controller;
-
-    }    
-    
+   
 }
