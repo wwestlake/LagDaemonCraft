@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LagDaemon Craft</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+<!--- 
+	<link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" />
+ 
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    
+-->
+
+    <link href="../static/css/lagdaemon.css" th:href="@{/css/lagdaemon.css}" rel="stylesheet" media="screen"/>
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"  media="screen"/>
+    <link href="../static/css/font-awesome.css" th:href="@{/css/font-awesome.css}" rel="stylesheet" media="screen"/>
+    <link href="../static/css/docs.css" th:href="@{/css/docs.css}" rel="stylesheet"/>
+    <link href="../static/css/bootstrap-social.css" th:href="@{/css/bootstrap-social.css}" rel="stylesheet" media="screen"/>
+
+    <script src="../static/js/jquery-3.1.1.min.js" th:src="@{/js/jquery-3.1.1.min.js}" ></script>
+    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}" ></script>
+
+    
+</head>
+<body>
+  <header>
+	<div class="container-fluid" style="background-color:#004336;color:#fff;height:200px;">
+        <img src="../static/images/FBcover1200x628.png" width="1000"
+             th:src="@{images/FBcover1200x628.png}"/>
+        <h1>LagDaemon Craft</h1>
+        <h2 style="float:left">Minecraft and More</h2>
+        <h3 style="float:right">Hello, <span th:text="${name != null} ? ${name} : 'Anonymous User'">Anonymous User</span>!</h3>
+	</div>
+	
+	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
+	  <div class="container-fluid">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>                        
+	      </button>
+	      <a class="navbar-brand" href="#">LagDaemon Craft</a>
+	    </div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a href="#">Home</a></li>
+	        <li class="dropdown">
+	          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Minecraft<span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Server</a></li>
+	            <li><a href="#">Videos</a></li>
+	            <li><a href="#">Blog</a></li>
+	            <li><a href="#">Forum</a></li>
+	          </ul>
+	        </li>
+	        <li class="dropdown">
+	          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Donations<span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Benefits</a></li>
+	            <li><a href="#">Patreon</a></li>
+	            <li><a href="#">Paypal</a></li>
+	          </ul>
+	        </li>
+	        <li><a href="#">Contact</a></li>
+	      </ul>
+	      <ul class="nav navbar-nav navbar-right">
+	        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+	        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+	        <li><a href="SocialConnect"><span class="glyphicon glyphicon-heart"></span> Social Connect</a></li>
+	      </ul>
+	    </div>
+	  </div>
+	</nav>
+  </header>
+
+
+  <section layout:fragment="content">
+    <p>Page content goes here</p>
+  </section>
+
+
+  <footer>
+	  <h1>Example Page Footer</h1>
+  </footer>  
+</body>
+</html>
+

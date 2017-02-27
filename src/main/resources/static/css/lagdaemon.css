@@ -1,0 +1,30 @@
+@CHARSET "ISO-8859-1";
+
+.affix {
+  top: 0;
+  width: 100%;
+}
+
+.affix-top {
+  width: 100%;
+}
+
+.affix-bottom {
+  position: absolute;
+  width: 100%;  
+}
+
+
+.affix + .container-fluid {
+	padding-top: 70px;
+}
+  
+
+footer {
+    height: 100px;
+    background: red;
+    color: white;
+}
+
+
+  

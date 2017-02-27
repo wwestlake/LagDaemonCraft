@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  	layout:decorator="layout">
+<head>
+  <title>Main</title>
+</head>
+<body>
+  <section layout:fragment="content">
+
+		<h3>Hello, <span th:text="${facebookProfile.name}">Some User</span>!</h3>
+
+		<h4>Here is your feed:</h4>
+
+		<div th:each="post:${feed}">
+			<b th:text="${post.from.name}">from</b> wrote:
+			<p th:text="${post.message}">message text</p>
+			<img th:if="${post.picture}" th:src="${post.picture}"/>
+			<hr/>
+		</div>	  
+
+  </section>
+</body>
+</html>

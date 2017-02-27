@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  	layout:decorator="layout">
+<head>
+  <title>Connect to Twitter</title>
+</head>
+<body>
+  <section layout:fragment="content">
+ 		<h3>Connect to Twitter Custom</h3>
+		<form action="/connect/facebook" method="POST">
+			<input type="hidden" name="scope" value="user_posts" />
+			<div class="formInfo">
+				<p>Hi There! You aren't connected to Twitter yet. Click the button to connect this application with your Twitter account.</p>
+			</div>
+			<p><button type="submit">Connect to Twitter</button></p>
+		</form> 
+  </section>
+</body>
+</html>
