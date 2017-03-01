@@ -37,7 +37,11 @@ public class IndexController {
 		this.connectionRepository = connectionRepository;
 	}
 	
-	
+	@RequestMapping("/privacy")
+    String privacy(Model model) {
+		return "/legal/privacystatement";
+    }
+    
     @GetMapping
     String index(Model model){
     	//User bill = new User(AuthenticationSource.LOCAL,"wwestlake@lagdaemon.com", true);

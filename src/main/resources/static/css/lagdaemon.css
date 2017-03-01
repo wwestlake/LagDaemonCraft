@@ -1,5 +1,6 @@
 @CHARSET "ISO-8859-1";
 
+
 .affix {
   top: 0;
   width: 100%;
@@ -18,11 +19,22 @@
 .affix + .container-fluid {
 	padding-top: 70px;
 }
-  
+
+footer .btn {
+    padding: 14px 24px;
+    border: 0 none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    
+}
+
+footer .btn:hover {
+   	color: #f3f78f;
+}  
 
 footer {
-    height: 100px;
-    background: red;
+    background: #333333;
     color: white;
 }
 
