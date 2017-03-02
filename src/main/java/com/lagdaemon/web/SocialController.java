@@ -38,20 +38,20 @@ public class SocialController {
 	
 	
     //connect/facebook
-    @RequestMapping(value = "/facebook", method=RequestMethod.GET)
+    @RequestMapping(value = "/facebookInit", method=RequestMethod.GET)
     String facebook(Model model) {
     	log.info("Entering facebook");
         if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
         	log.info("primary connection is null");
-            return "redirect:/connect/facebookConnect";
+            return "redirect:/connect/facebook";
         }
     	
         log.info("returning user profile");
         model.addAttribute("name", facebook.userOperations().getUserProfile().getName());
-        return "redirect:/connect/facebookConnected";
+        return "hello";
    }
    
-    @RequestMapping(value = "/twitter", method=RequestMethod.GET)
+    @RequestMapping(value = "/twitterInit", method=RequestMethod.GET)
     public String twitter(Model model) {
         if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {
             return "redirect:/connect/twitter";
@@ -60,7 +60,7 @@ public class SocialController {
         return "/";
     }
 
-    @RequestMapping(value = "/linkedin", method=RequestMethod.GET)
+    @RequestMapping(value = "/linkedinInit", method=RequestMethod.GET)
     public String linkedin(Model model) {
         if (connectionRepository.findPrimaryConnection(LinkedIn.class) == null) {
             return "redirect:/connect/linkedin";
@@ -75,23 +75,5 @@ public class SocialController {
     	return "/SocialConnect";
     }
 
-    @RequestMapping(value = "/connect/facebookConnect", method=RequestMethod.GET) 
-    public String FBConnect(Model model) { 
-    	log.info("handler for /connect/facebookConnect");
-    	return "/connect/facebookConnect";
-    }
     
-    @RequestMapping(value = "/connect/facebookConnected", method=RequestMethod.GET) 
-    public String FBConnected(Model model) { 
-    	log.info("handler for /connect/facebookConnected");
-    	return "/connect/facebookConnected";
-    }
-
-	///facebook#_=_ fix
-    @RequestMapping(value = "/connect/facebook#_=_", method=RequestMethod.GET) 
-    public String FBhashFix(Model model) { 
-    	log.info("handler for facebook hash fix");
-    	return "redirect:/connect/facebook";
-    }
-   
 }
