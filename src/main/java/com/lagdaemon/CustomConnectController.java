@@ -7,6 +7,7 @@ import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.web.ConnectController;
 import org.springframework.stereotype.Controller;
 
+// disabled for now
 //@Controller
 public class CustomConnectController extends ConnectController {
     @Inject
