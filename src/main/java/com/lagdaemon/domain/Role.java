@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 public class Role {
@@ -30,10 +31,10 @@ public class Role {
 	public void setRole(String value) { this.role = value; }
 	
     @ManyToMany(fetch=FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(CascadeType.SAVE_UPDATE)
     @JoinTable(name = "users_roles",
           joinColumns = {@JoinColumn(name = "role_id")}, 
-          inverseJoinColumns = @JoinColumn(name = "user_id"))	
+          inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
     
     public Set<User> getUsers() { return users; }

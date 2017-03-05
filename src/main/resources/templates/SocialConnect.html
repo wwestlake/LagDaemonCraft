@@ -9,7 +9,7 @@
 </head>
 <body>
 	<section layout:fragment="content">
-		<div class="container">
+		<div class="container" style="width:90%">
 			<div class="row">
 				<div class="col-sm-4">
 				Connecting with social media allows you to quickly and easily 
@@ -34,9 +34,9 @@
 				You can also create a local account with a name, email address, and password.  
 				With this account you can log in directly any time.  Please read our terms and conditions
 				as well as our privacy policy before creating an account.<br/><br/>	
-					  <button type="button" class="btn btn-block" style="background:#004336;color:#FFFFFF">
+					  <a th:href="@{/registration}" type="button" class="btn btn-block" style="background:#004336;color:#FFFFFF">
 					  	Create a local account on LagDaemon Craft
-					  </button>
+					  </a>
 				
 				</div>
 			</div>

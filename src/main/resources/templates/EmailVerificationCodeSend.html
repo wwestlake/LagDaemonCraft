@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  	>
+<head>
+  <title>Main</title>
+</head>
+<body>
+
+Thank you for registering with LagDaemon Craft.
+<br/><br/>
+In order to activate your account please copy the code below into the <b>Registration Code</b> on the website:<br/><br/>	
+
+<p th:text="${verification_code}"></p>
+
+<a th:href="@{http://dev-machine.com:8080/verify(code=${verification_code},email=${email})}">Click here</a>
+
+</body>
+</html>

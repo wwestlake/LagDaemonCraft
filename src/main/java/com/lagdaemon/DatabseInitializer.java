@@ -48,18 +48,35 @@ public class DatabseInitializer implements ApplicationListener<ContextRefreshedE
 		// Initialize roles to default
 		log.info("Configuring database with role and user");
 		
-		Role role = new Role();
-		role.setRole("admin");
-		roleRepository.save(role);
+		Role role1 = new Role();
+		role1.setRole("ROLE_USER");
+		roleRepository.save(role1);
+
+		Role role2 = new Role();
+		role2.setRole("ROLE_MODERATOR");
+		roleRepository.save(role2);
+
+		Role role3 = new Role();
+		role3.setRole("ROLE_BLOGAUTHOR");
+		roleRepository.save(role3);
+
+		Role role4 = new Role();
+		role4.setRole("ROLE_ADMIN");
+		roleRepository.save(role4);
+		
 		
 		User user = new User();
-		user.addRole(role);
+		user.addRole(role4);
+		
 		user.setEmail("admin@lagdaemon.com");
 		user.setPasswordHash("password");
         user.setAuthSource(AuthenticationSource.LOCAL);
         user.setLastLoginDateTime(LocalDateTime.now());
         user.setEmailValidated(true);
+        user.setAgreeTermsAndConditions(true);
+		role4.addUser(user);
         userService.save(user);
+		roleRepository.save(role4);
 		
 		
 	}

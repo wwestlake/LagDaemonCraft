@@ -44,6 +44,10 @@ public class UserValidator implements Validator {
             errors.rejectValue("email", "Duplicate.userForm.email");
         }
 
+        if (!user.getAgreeTermsAndConditions()) {
+        	errors.reject("You must agree to the terms and conditions");
+        }
+        
         if (! validateEmail(user.getEmail())) {
         	errors.rejectValue("email", "Format.userForm.email");
         }

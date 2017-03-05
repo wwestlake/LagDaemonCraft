@@ -64,8 +64,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	ds.setPassword(password);
     	
     	auth.jdbcAuthentication().dataSource(ds)
+    		
     		.usersByUsernameQuery("select email as username, password_hash as password, email_validated as active from user where email=?")
-    		.groupAuthoritiesByUsername("select email as username, role from role where email=?")
+    		.authoritiesByUsernameQuery("SELECT email, role FROM lagdaemon.user inner join users_roles inner join role on users_roles.user_id = user.user_id AND user.email = ?")
     		.passwordEncoder(passwordEncoder());
     	
     	return ds;

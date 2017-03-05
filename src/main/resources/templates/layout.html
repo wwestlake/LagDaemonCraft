@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html
 	xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	>
 <head>
     <title>LagDaemon Craft</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -30,16 +32,27 @@
     <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.js}" ></script>
 
     <link href="../static/css/lagdaemon.css" th:href="@{/css/lagdaemon.css}" rel="stylesheet" media="screen"/>
+
     
 </head>
 <body>
   <header>
-	<div class="container-fluid" style="background-color:#004336;color:#fff;height:200px;">
+	<div class="container-fluid" style="position:relative;background-color:#004336;color:#fff;height:200px;">
         <img src="../static/images/FBcover1200x628.png" width="1000"
              th:src="@{images/FBcover1200x628.png}"/>
         <h1>LagDaemon Craft</h1>
         <h2 style="float:left">Minecraft and More</h2>
-        <h3 style="float:right">Hello, <span th:text="${name != null} ? ${name} : 'Anonymous User'">Anonymous User</span>!</h3>
+        <!-- 
+        <h3 style="float:right"> Hello, <span sec:authentication="name" th:text="${name != null} ? ${name} : 'Anonymous User'">Anonymous User</span>!</h3>
+         -->
+         <h5 style="position: absolute;bottom:5px;float:right;">
+
+	<span sec:authorize="isAuthenticated()">
+		Logged user: <span sec:authentication="name">Bob</span>
+		Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+	</span>   
+		</h5>
+
 	</div>
 	
 	<nav class="navbar navbar-inverse" data-spy="affix" data-offset-top="197">
@@ -109,7 +122,7 @@
 					<div class="row">
 					    <div class="col-sm-4">
 					      <h3 class="text-center">Legal</h3>
-							  <a class="btn btn-block">Terms and Conditions</a>
+							  <a href="/terms" class="btn btn-block">Terms and Conditions</a>
 							  <a href="/privacy" class="btn btn-block">Privacy Policy</a>
 					    </div>
 					</div>

@@ -38,5 +38,14 @@ footer {
     color: white;
 }
 
+.panel > .panel-heading {
+	background:#004336;
+	color:#FFFFFF;
+}
+
+.panel-body {
+	background:#444444;
+	color:#FFFFFF;
+}
 
   

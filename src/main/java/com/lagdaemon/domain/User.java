@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.Transient;
 
 import com.lagdaemon.interfaces.AuthenticationSource;
@@ -56,7 +58,7 @@ public class User {
 	@Column(updatable = true, nullable = true, length=50)
 	private String minecraftId;
 	
-	@Column(updatable = true, nullable = false)
+	@Column(updatable = true, nullable = false, columnDefinition = "TINYINT(1)")
 	private Boolean emailValidated;
 	
 	@Column(updatable = true, nullable = false)
@@ -72,8 +74,14 @@ public class User {
           inverseJoinColumns = @JoinColumn(name = "role_id"))	
 	@Column(updatable = true, nullable = false)
 	private Set<Role> roles;
+    
+    @Column(updatable = true, nullable = true, length=50)
+	private String emailValidationCode;
 	
+	@Column(updatable = true, nullable = false, columnDefinition = "TINYINT(1)")
+    private Boolean agreeTermsAndConditions;
 	
+    
 	public long getId() { return user_id; }
 
 	public AuthenticationSource getAuthSource() { return authSource; }
@@ -103,6 +111,9 @@ public class User {
 	public String getPasswordHash() { return passwordHash; }
 	public void setPasswordHash(String value) { passwordHash = value; }
 
+	
+    @ManyToMany(fetch=FetchType.LAZY)
+    @Cascade(CascadeType.SAVE_UPDATE)
 	public Set<Role> getRoles() { return this.roles; }
 	public void setRoles(Set<Role> value) { this.roles = value; }
 	
@@ -116,6 +127,12 @@ public class User {
 		if (! roles.contains(role)) return;
 		roles.remove(role);
 	}
+	
+	public String getEmailValidationCode() { return this.emailValidationCode; }
+	public void setEmailValidationCode(String value) { this.emailValidationCode = value; }
+	
+	public Boolean getAgreeTermsAndConditions() { return this.agreeTermsAndConditions; }
+	public void setAgreeTermsAndConditions(Boolean value) { this.agreeTermsAndConditions = value; }
 	
 	// not stored in repository
 	
