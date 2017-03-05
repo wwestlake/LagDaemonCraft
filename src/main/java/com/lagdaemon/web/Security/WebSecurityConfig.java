@@ -66,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	auth.jdbcAuthentication().dataSource(ds)
     		
     		.usersByUsernameQuery("select email as username, password_hash as password, email_validated as active from user where email=?")
-    		.authoritiesByUsernameQuery("SELECT email, role FROM lagdaemon.user inner join users_roles inner join role on users_roles.user_id = user.user_id AND user.email = ?")
+    		.authoritiesByUsernameQuery("SELECT email, role FROM lagdaemon.user join users_roles on users_roles.user_id = user.user_id join role on users_roles.role_id = role.role_id where user.email = ?")
     		.passwordEncoder(passwordEncoder());
     	
     	return ds;
@@ -77,7 +77,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
     
-    @Bean SecurityService securityService() {
+    @Bean 
+    SecurityService securityService() {
     	return new SecurityServiceImpl();
     }
 

@@ -50,7 +50,11 @@
 	<span sec:authorize="isAuthenticated()">
 		Logged user: <span sec:authentication="name">Bob</span>
 		Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
-	</span>   
+	</span> 
+	<span sec:authorize="isAnonymous()">
+		Welcome Anonymous User
+	</span>
+	  
 		</h5>
 
 	</div>
@@ -87,11 +91,22 @@
 	        </li>
 	        <li><a href="#">Contact</a></li>
 	      </ul>
-	      <ul class="nav navbar-nav navbar-right">
+	      <ul th:if="${#authorization.expression('isAnonymous()')}" class="nav navbar-nav navbar-right">
 	        <li><a href="/registration"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 	        <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
 	        <li><a href="SocialConnect"><span class="glyphicon glyphicon-heart"></span> Social Connect</a></li>
 	      </ul>
+
+	      <ul th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="nav navbar-nav navbar-right">
+	        <li><a href="/useradmin"><span class="glyphicon glyphicon-user"></span>User Admin</a></li>
+	        <li><a href="/configuration"><span class="glyphicon glyphicon-user"></span>System Settings</a></li>
+	      </ul>
+
+
+	      <ul th:if="${#authorization.expression('isAuthenticated()')}" class="nav navbar-nav navbar-right">
+	        <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> Log Out</a></li>
+	      </ul>
+	      
 	    </div>
 	  </div>
 	</nav>

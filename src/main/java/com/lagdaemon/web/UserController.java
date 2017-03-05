@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +19,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
 import com.google.common.collect.ImmutableMap;
+import com.lagdaemon.domain.Role;
 import com.lagdaemon.domain.User;
 import com.lagdaemon.interfaces.AuthenticationSource;
 import com.lagdaemon.service.EmailServiceImpl;
+import com.lagdaemon.service.RoleService;
 import com.lagdaemon.service.SecurityService;
 import com.lagdaemon.service.UserService;
 import com.lagdaemon.service.UserValidator;
@@ -36,6 +45,9 @@ public class UserController {
 	@Autowired
     private UserService userService;
 
+	@Autowired
+	private RoleService roleService;
+	
     @Autowired
     private SecurityService securityService;
 
@@ -45,6 +57,8 @@ public class UserController {
 	@Autowired
 	EmailServiceImpl emailService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
     
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
@@ -61,12 +75,15 @@ public class UserController {
             return "registration";
         }
         
-        
         String uuid = UUID.randomUUID().toString(); 
         userForm.setAuthSource(AuthenticationSource.LOCAL);
         userForm.setLastLoginDateTime(LocalDateTime.now());
         userForm.setEmailValidated(false);
         userForm.setEmailValidationCode(uuid);
+        userForm.setPasswordHash(bCryptPasswordEncoder.encode(userForm.getPasswordHash()));
+        userForm.setPasswordConfirm("");
+        Role role = roleService.findByRolename("ROLE_USER");
+        userForm.addRole(role);
         userService.save(userForm);
         
         
@@ -131,7 +148,14 @@ public class UserController {
     	return "redirect:/";
     }
     
-    
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){    
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+    }
     
     
 }
