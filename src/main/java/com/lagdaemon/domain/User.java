@@ -93,7 +93,7 @@ public class User {
 	public String getFirstName() { return firstName; }
 	public void setFirstName(String value) { firstName = value; }
 	
-	public String getLasttName() { return lastName; }
+	public String getLastName() { return lastName; }
 	public void setLastName(String value) { lastName = value; }
 
 	public String getDisplayName() { return displayName; }

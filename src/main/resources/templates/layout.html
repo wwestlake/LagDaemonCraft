@@ -38,8 +38,9 @@
 <body>
   <header>
 	<div class="container-fluid" style="position:relative;background-color:#004336;color:#fff;height:200px;">
-        <img src="../static/images/FBcover1200x628.png" width="1000"
+<!--         <img src="../static/images/FBcover1200x628.png" width="1000"
              th:src="@{images/FBcover1200x628.png}"/>
+-->             
         <h1>LagDaemon Craft</h1>
         <h2 style="float:left">Minecraft and More</h2>
         <!-- 
@@ -94,19 +95,19 @@
 	      <ul th:if="${#authorization.expression('isAnonymous()')}" class="nav navbar-nav navbar-right">
 	        <li><a href="/registration"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 	        <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-	        <li><a href="SocialConnect"><span class="glyphicon glyphicon-heart"></span> Social Connect</a></li>
+	        <li><a href="/SocialConnect"><span class="glyphicon glyphicon-heart"></span> Social Connect</a></li>
 	      </ul>
 
 	      <ul th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="nav navbar-nav navbar-right">
-	        <li><a href="/useradmin"><span class="glyphicon glyphicon-user"></span>User Admin</a></li>
-	        <li><a href="/configuration"><span class="glyphicon glyphicon-user"></span>System Settings</a></li>
+	        <li><a href="/useradmin"><span class="glyphicon glyphicon-list"></span> User Admin</a></li>
+	        <li><a href="/configuration"><span class="glyphicon glyphicon-cog"></span> System Settings</a></li>
 	      </ul>
-
 
 	      <ul th:if="${#authorization.expression('isAuthenticated()')}" class="nav navbar-nav navbar-right">
 	        <li><a href="/logout"><span class="glyphicon glyphicon-user"></span> Log Out</a></li>
+	        <li><a href="/profile"><span class="glyphicon glyphicon-edit"></span> My Profile</a></li>
 	      </ul>
-	      
+      
 	    </div>
 	  </div>
 	</nav>

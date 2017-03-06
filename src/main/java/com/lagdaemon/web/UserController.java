@@ -157,5 +157,37 @@ public class UserController {
         return "redirect:/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
     }
     
+    @RequestMapping(value="/profile", method = RequestMethod.GET)
+    public String editProfile (Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        log.info(name);
+        
+        User user = userService.findByUsername(name);
+        model.addAttribute("user", user);
+        
+        return "/user/profile";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+    }
+    
+    @RequestMapping(value="/profile", method = RequestMethod.POST)
+    public String saveProfile (@ModelAttribute User user, Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        
+        
+        
+    	User dbUser = userService.findByUsername(name);
+    	
+    	log.info(user.getFirstName());
+    	
+    	dbUser.setFirstName(user.getFirstName());
+    	dbUser.setLastName(user.getLastName());
+    	dbUser.setDisplayName(user.getDisplayName());
+    	dbUser.setMinecraftId(user.getMinecraftId());
+    	
+        userService.save(dbUser);
+        model.addAttribute("message", "Profile Saved");
+        return "/user/profile";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+    }
     
 }
