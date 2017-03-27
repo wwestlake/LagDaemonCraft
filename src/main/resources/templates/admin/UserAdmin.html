@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  	layout:decorator="layout">
+<head>
+  <title>User Admin</title>
+  
+<script>
+
+$(document).ready(function() {
+    $('#user_tab').DataTable();
+} );
+
+$(".delete-button").click( function() {
+	
+});
+
+
+
+</script>  
+  
+</head>
+<body>
+  <section layout:fragment="content">
+	<div class="container-fluid" >  
+
+<table id="user_tab" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Login</th>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Validated</th>
+                <th>Last Login</th>
+                <th>Locked</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Login</th>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Validated</th>
+                <th>Last Login</th>
+                <th>Locked</th>
+                <th>Operation</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.displayName}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.emailValidated}"></td>
+                <td th:text="${user.lastLoginDateTime}"></td>
+                <td th:text="${user.locked}? 'Locked' : 'Active'"></td>
+                <td><A class="btn btn-warning" th:href="@{'/admin/useredit/' + ${user.Id}}">Edit</A>
+                    <button type="button" data-toggle="modal"  th:attr="data-target='#confirm-delete_' + ${user.Id}" class="btn btn-danger">Delete</button>
+                	<A class="btn btn-warning" th:href="@{'/admin/userlock/' + ${user.Id}}"><span th:text="${user.locked}? 'Unlock' : 'Lock'"></span></A></td>
+					<div class="modal fade" th:id="'confirm-delete_' + ${user.Id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="vertical-alignment-helper">
+						    <div class="modal-dialog vertical-align-center">
+						        <div class="modal-content">
+						            <div class="modal-header">
+						                Delete user <span th:text="${user.email}" ></span>
+						            </div>
+						            <div class="modal-body">
+						            	<br/><br/><br/>
+						                This action will permanently delete the user, do you want to continue?
+						                <br/><br/><br/>
+						            </div>
+						            <div class="modal-footer">
+						                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						                <a class="btn btn-danger btn-ok confirm-delete" th:href="@{'/admin/userdelete/' + ${user.Id}}" >Delete</a>
+						            </div>
+						        </div>
+						    </div>
+					    </div>	
+					</div>
+            </tr>
+            
+            
+        </tbody>
+    </table>
+	</div>
+
+	
+	
+  </section>
+</body>
+</html>

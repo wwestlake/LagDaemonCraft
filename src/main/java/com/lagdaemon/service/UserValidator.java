@@ -3,11 +3,15 @@ package com.lagdaemon.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import com.lagdaemon.domain.User;
 
@@ -30,29 +34,44 @@ public class UserValidator implements Validator {
     @Autowired
     private UserService userService;
 
+    
     @Override
     public boolean supports(Class<?> aClass) {
         return User.class.equals(aClass);
     }
 
+    
     @Override
     public void validate(Object o, Errors errors) {
         User user = (User) o;
-
+        
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "login", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordHash", "NotEmpty");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirm", "NotEmpty");
+
+        if (user.getAgreeTermsAndConditions() == null || user.getAgreeTermsAndConditions() == false) {
+        	errors.rejectValue("agreeTermsAndConditions","legal.terms");
+        }
+
+        if (errors.hasErrors()) return;
+
         if (userService.findByUsername(user.getEmail()) != null) {
             errors.rejectValue("email", "Duplicate.userForm.email");
         }
-
-        if (!user.getAgreeTermsAndConditions()) {
-        	errors.reject("You must agree to the terms and conditions");
+        
+        if (user.getLogin() == null | user.getLogin().isEmpty()) {
+        	errors.reject("Login field is required");
+        } else {
+        	if (userService.findByLogin(user.getLogin()) != null) {
+        		errors.rejectValue("login","login.inuse");
+        	}
         }
         
         if (! validateEmail(user.getEmail())) {
         	errors.rejectValue("email", "Format.userForm.email");
         }
         
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordHash", "NotEmpty");
         if (user.getPasswordHash().length() < 8 || user.getPasswordHash().length() > 32) {
             errors.rejectValue("password", "Size.userForm.password");
         }

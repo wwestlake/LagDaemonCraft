@@ -37,7 +37,7 @@
 				<div class="col-sm-4">
 				</div>
 				<div class="col-sm-4">
-			       <form th:action="@{loginRecaptcha}" method="post" th:object="${userForm}">
+			        <form th:action="@{manualEmailValidation}" method="post"  th:object="${emailValidationForm}">
 				   <div  th:if="${#fields.hasErrors()}" class="alert alert-danger">
 			            <ul>
 			                <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
@@ -47,28 +47,21 @@
 			            </ul>				   
 				   </div>	
 				  <div class="panel panel-default">
-				    <div class="panel-heading">Login</div>
+				    <div class="panel-heading">Validate Email</div>
 				    <div class="panel-body">			        
 					    <div class="form-group">
-					      <label for="username">Email:</label>
-					      <input type="text" class="form-control" id="username" name="username" placeholder="Enter email or login id"></input>
+					      <label for="email">Email:</label>
+					      <input type="text" class="form-control" id="email" name="email" placeholder="Enter email or login id"></input>
 					    </div>
 					    <div class="form-group">
-					      <label for="password">Password:</label>
-					      <input type="password" class="form-control" id="ppasswordwd" name="password" placeholder="Enter password"></input>
+					      <label for="code">Validation Code:</label>
+					      <input type="text" class="form-control" id="code" name="code" placeholder="Enter code"></input>
 					    </div>
-					    <div class="checkbox">
-					      <label><input type="checkbox"></input> Remember me</label>
-
-					      <br /><br />
-
                           <input type="hidden" id="recaptchaResponse" name="recaptchaResponse" value="" />
                           <div id="g-recaptcha"></div>
-
-					    </div>
 					    <button type="submit" class="btn btn-default" style="background:#004336;color:#FFFFFF">Submit</button>
 					</div>
-					</div>			        
+					</div>
 			        </form>
 			        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&amp;render=explicit" async="async" defer="defer"></script>
 				</div>

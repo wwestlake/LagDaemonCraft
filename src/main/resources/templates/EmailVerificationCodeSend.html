@@ -12,9 +12,13 @@ Thank you for registering with LagDaemon Craft.
 <br/><br/>
 In order to activate your account please copy the code below into the <b>Registration Code</b> on the website:<br/><br/>	
 
+You can navigate to https://www.lagdaemon.com/ and click on the <b>Verify Email</b> link from there enter your email address and the verificartion code below.
+
 <p th:text="${verification_code}"></p>
 
-<a th:href="@{http://dev-machine.com:8080/verify(code=${verification_code},email=${email})}">Click here</a>
+<br /> <br />
+Or you can click this link:
+<a th:href="@{http://www.lagdaemon.com/verify(code=${verification_code},email=${email})}">Verify My Email</a>
 
 </body>
 </html>

@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -23,7 +25,8 @@ import javax.persistence.Transient;
 import com.lagdaemon.interfaces.AuthenticationSource;
 
 @Entity
-public class User {
+@Table(name = "Users")
+public class User extends RecaptchaForm {
 
 	public User() {}
 	
@@ -34,38 +37,63 @@ public class User {
 		this.lastLoginDateTime = LocalDateTime.now();
 		this.passwordHash = passwordHash;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long user_id;
-
+	protected long id;
+	public long getId() { return id; }
+	
+	
 	@Enumerated(EnumType.STRING)
 	@Column(updatable = true, nullable = false, length=50)
 	private AuthenticationSource authSource;
+	public AuthenticationSource getAuthSource() { return authSource; }
+	public void setAuthSource(AuthenticationSource value) { authSource = value; }
 	
 	@Column(updatable = true, nullable = false, length=50)
 	private String email;
+	public String getEmail() { return email; }
+	public void setEmail(String value) { email = value; }
 
 	@Column(updatable = true, nullable = true, length=50)
 	private String firstName;
+	public String getFirstName() { return firstName; }
+	public void setFirstName(String value) { firstName = value; }
 
 	@Column(updatable = true, nullable = true, length=50)
 	private String lastName;
+	public String getLastName() { return lastName; }
+	public void setLastName(String value) { lastName = value; }
 
 	@Column(updatable = true, nullable = true, length=50)
 	private String displayName;
+	public String getDisplayName() { return displayName; }
+	public void setDisplayName(String value) { displayName = value; }
 	
 	@Column(updatable = true, nullable = true, length=50)
 	private String minecraftId;
+	public String getMinecraftId() { return minecraftId; }
+	public void setMinecraftId(String value) { minecraftId = value; }
 	
 	@Column(updatable = true, nullable = false, columnDefinition = "TINYINT(1)")
 	private Boolean emailValidated;
+	public Boolean getEmailValidated() { return emailValidated; }
+	public void setEmailValidated(Boolean value) { emailValidated = value; }
+
+	@Column(updatable = true, nullable = false, columnDefinition = "TINYINT(1)")
+	private Boolean locked;
+	public Boolean getLocked() { return locked; }
+	public void setLocked(Boolean value) { locked = value; }
 	
 	@Column(updatable = true, nullable = false)
 	private LocalDateTime lastLoginDateTime;
+	public LocalDateTime getLastLoginDateTime() { return lastLoginDateTime; }
+	public void setLastLoginDateTime(LocalDateTime value) { lastLoginDateTime = value; }
 	
 	@Column(updatable = true, nullable = false)
 	private String passwordHash;
+	public String getPasswordHash() { return passwordHash; }
+	public void setPasswordHash(String value) { passwordHash = value; }
 	
     @ManyToMany(fetch=FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
@@ -77,39 +105,19 @@ public class User {
     
     @Column(updatable = true, nullable = true, length=50)
 	private String emailValidationCode;
+	public String getEmailValidationCode() { return this.emailValidationCode; }
+	public void setEmailValidationCode(String value) { this.emailValidationCode = value; }
 	
 	@Column(updatable = true, nullable = false, columnDefinition = "TINYINT(1)")
     private Boolean agreeTermsAndConditions;
-	
-    
-	public long getId() { return user_id; }
+	public Boolean getAgreeTermsAndConditions() { return this.agreeTermsAndConditions; }
+	public void setAgreeTermsAndConditions(Boolean value) { this.agreeTermsAndConditions = value; }
 
-	public AuthenticationSource getAuthSource() { return authSource; }
-	public void setAuthSource(AuthenticationSource value) { authSource = value; }
-	
-	public String getEmail() { return email; }
-	public void setEmail(String value) { email = value; }
+	@Column(updatable = true, nullable = true)
+    private String login;
+	public String getLogin() { return login; }
+	public void setLogin(String value) { this.login = value; }
 
-	public String getFirstName() { return firstName; }
-	public void setFirstName(String value) { firstName = value; }
-	
-	public String getLastName() { return lastName; }
-	public void setLastName(String value) { lastName = value; }
-
-	public String getDisplayName() { return displayName; }
-	public void setDisplayName(String value) { displayName = value; }
-
-	public String getMinecraftId() { return minecraftId; }
-	public void setMinecraftId(String value) { minecraftId = value; }
-	
-	public Boolean getEmailValidated() { return emailValidated; }
-	public void setEmailValidated(Boolean value) { emailValidated = value; }
-	
-	public LocalDateTime getLastLoginDateTime() { return lastLoginDateTime; }
-	public void setLastLoginDateTime(LocalDateTime value) { lastLoginDateTime = value; }
-
-	public String getPasswordHash() { return passwordHash; }
-	public void setPasswordHash(String value) { passwordHash = value; }
 
 	
     @ManyToMany(fetch=FetchType.LAZY)
@@ -128,12 +136,6 @@ public class User {
 		roles.remove(role);
 	}
 	
-	public String getEmailValidationCode() { return this.emailValidationCode; }
-	public void setEmailValidationCode(String value) { this.emailValidationCode = value; }
-	
-	public Boolean getAgreeTermsAndConditions() { return this.agreeTermsAndConditions; }
-	public void setAgreeTermsAndConditions(Boolean value) { this.agreeTermsAndConditions = value; }
-	
 	// not stored in repository
 	
 	@Transient
@@ -144,7 +146,8 @@ public class User {
 	
 	@Transient
 	public void setPasswordConfirm(String value) { this.passwordConfirm = value; }
-	
+
+
 	
 	
 }

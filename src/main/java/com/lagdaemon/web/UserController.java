@@ -1,55 +1,46 @@
 package com.lagdaemon.web;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-
 import com.google.common.collect.ImmutableMap;
-import com.lagdaemon.domain.Role;
 import com.lagdaemon.domain.User;
-import com.lagdaemon.interfaces.AuthenticationSource;
 import com.lagdaemon.service.EmailServiceImpl;
-import com.lagdaemon.service.RoleService;
-import com.lagdaemon.service.SecurityService;
+import com.lagdaemon.service.RecaptchaFormValidator;
 import com.lagdaemon.service.UserService;
 import com.lagdaemon.service.UserValidator;
 
-import groovy.util.logging.Log;
 import it.ozimov.springboot.mail.service.exception.CannotSendEmailException;
 
 @Controller
-public class UserController {
+public class UserController extends RecaptchaController {
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-
 	
 	@Autowired
     private UserService userService;
-
-	@Autowired
-	private RoleService roleService;
-	
-    @Autowired
-    private SecurityService securityService;
 
     @Autowired
     private UserValidator userValidator;
@@ -57,9 +48,7 @@ public class UserController {
 	@Autowired
 	EmailServiceImpl emailService;
 
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    
+	
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model) {
         model.addAttribute("userForm", new User());
@@ -67,7 +56,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+    public String registration(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -75,32 +64,19 @@ public class UserController {
             return "registration";
         }
         
-        String uuid = UUID.randomUUID().toString(); 
-        userForm.setAuthSource(AuthenticationSource.LOCAL);
-        userForm.setLastLoginDateTime(LocalDateTime.now());
-        userForm.setEmailValidated(false);
-        userForm.setEmailValidationCode(uuid);
-        userForm.setPasswordHash(bCryptPasswordEncoder.encode(userForm.getPasswordHash()));
-        userForm.setPasswordConfirm("");
-        Role role = roleService.findByRolename("ROLE_USER");
-        userForm.addRole(role);
-        userService.save(userForm);
-        
+        User newUser = userService.createUser(userForm);
         
     	try {
-			//emailService.sendEmail("wwestlake@lagdaemon.com", "Bill Westlake", "This is a test", "I hope I got this email");
     		Map<String, Object> map = ImmutableMap.of( 
-    				"verification_code", uuid,
+    				"verification_code", newUser.getEmailValidationCode(),
     				"email", userForm.getEmail()
     		);
     		
-    		emailService.sendEmailWithThymeleaf(userForm.getEmail(), "", "LagDaemon Craft Account Registration", "EmailVerificationCodeSend.html", map);
+    		emailService.sendEmailWithThymeleaf(newUser.getEmail(), "", "LagDaemon Craft Account Registration", "EmailVerificationCodeSend.html", map);
     		
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CannotSendEmailException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}    	
 
@@ -108,25 +84,43 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-        if (error != null)
-            model.addAttribute("error", "Your username and password is invalid.");
-
-        if (logout != null)
-            model.addAttribute("message", "You have been logged out successfully.");
-
+    public String login(Model model, HttpServletRequest request) {
+        String referrer = request.getHeader("Referer");
+        if(referrer!=null){
+            request.getSession().setAttribute("url_prior_login", referrer);
+        }
+    	model.addAttribute("userForm", new User());
         return "login";
     }
 
+    @RequestMapping(value = "/loginRecaptcha", method = RequestMethod.POST)
+    public String loginRecaptcha(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "login";
+        }
+    	
+    	return "forward:/login";
+    }
+    
+    @RequestMapping(value = "/loginSuccess", method = RequestMethod.GET)
+    public String loginSuccess(HttpServletRequest request) throws MalformedURLException {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        log.info(name);
+        String url = (String) request.getSession().getAttribute("url_prior_login");
+
+        User user = userService.findByUsername(name);
+        user.setLastLoginDateTime(LocalDateTime.now());
+        
+        String path = new URL(url).getPath();
+    	return "redirect:" + path;
+    }
+    
     @RequestMapping(value = {"/welcome"}, method = RequestMethod.GET)
     public String welcome(Model model) {
-    	
-    	//Iterable<User> users = repo.findAll();
-    	
-    	
         return "welcome";
     }
-  //
     
     @RequestMapping(value = {"/verify"}, method = RequestMethod.GET)
     public String verify(@RequestParam("code") String code,
@@ -154,7 +148,7 @@ public class UserController {
         if (auth != null){    
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
-        return "redirect:/login?logout";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+        return "redirect:/login?logout";
     }
     
     @RequestMapping(value="/profile", method = RequestMethod.GET)
@@ -166,15 +160,13 @@ public class UserController {
         User user = userService.findByUsername(name);
         model.addAttribute("user", user);
         
-        return "/user/profile";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+        return "/user/profile";
     }
     
     @RequestMapping(value="/profile", method = RequestMethod.POST)
     public String saveProfile (@ModelAttribute User user, Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
-        
-        
         
     	User dbUser = userService.findByUsername(name);
     	
@@ -185,9 +177,26 @@ public class UserController {
     	dbUser.setDisplayName(user.getDisplayName());
     	dbUser.setMinecraftId(user.getMinecraftId());
     	
+    	
         userService.save(dbUser);
         model.addAttribute("message", "Profile Saved");
-        return "/user/profile";//You can redirect wherever you want, but generally it's a good practice to show login screen again.
+        return "/user/profile";
     }
+
+    @RequestMapping(value="/manualEmailValidation", method = RequestMethod.GET)
+    public String getManualEmailValidation (Model model) {
+    	model.addAttribute("emailValidationForm",new EmailValidation());
+    	return "manualEmailValidation";
+    }
+     
+    @RequestMapping(value="/manualEmailValidation", method = RequestMethod.POST)
+    public String postManualEmailValidation (@ModelAttribute("emailValidationForm") @Valid EmailValidation form, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "manualEmailValidation";
+        }
+    	
+    	return userService.validateUserEmail(form.getEmail(), form.getCode());
+    }
+    
     
 }

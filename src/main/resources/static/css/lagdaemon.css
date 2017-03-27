@@ -1,9 +1,22 @@
 @CHARSET "ISO-8859-1";
 
+nav {
+  height: 50px;
+  width: 100%;
+}
+
+.nav-container {
+  height: 50px;
+  width: 100%;
+  display: table;
+}
+
 
 .affix {
-  top: 0;
-  width: 100%;
+	position: fixed;
+  	top: 0;
+  	width: 100%;
+   	z-index: 1001;
 }
 
 .affix-top {
@@ -15,9 +28,16 @@
   width: 100%;  
 }
 
-
+.affix + .container {
+    padding-top:50px
+}
 .affix + .container-fluid {
 	padding-top: 70px;
+}
+
+.nav-wrapper
+{
+    min-height:250px;
 }
 
 footer .btn {
@@ -47,5 +67,43 @@ footer {
 	background:#444444;
 	color:#FFFFFF;
 }
+
+.modal-content > .modal-header {
+	background:#004336;
+	color:#FFFFFF;
+}
+
+.modal-content > .modal-body {
+	background:#444444;
+	color:#FFFFFF;
+}
+
+.modal-content > .modal-footer {
+	background:#004336;
+	color:#FFFFFF;
+}
+
+.vertical-alignment-helper {
+    display:table;
+    height: 100%;
+    width: 100%;
+    pointer-events:none;
+}
+.vertical-align-center {
+    /* To center vertically */
+    display: table-cell;
+    vertical-align: middle;
+    pointer-events:none;
+}
+.modal-content {
+    /* Bootstrap sets the size of the modal in the modal-dialog class, we need to inherit it */
+    width:inherit;
+    height:inherit;
+    /* To center horizontally */
+    margin: 0 auto;
+    pointer-events:all;
+}
+
+
 
   

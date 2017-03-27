@@ -1,4 +1,4 @@
-package com.lagdaemon.web.Security;
+package com.lagdaemon.config;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.slf4j.Logger;
@@ -8,10 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.lagdaemon.service.CustomeAuthenticationSuccessHandler;
 import com.lagdaemon.service.SecurityService;
 import com.lagdaemon.service.SecurityServiceImpl;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,26 +21,35 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
+	 
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/**")
+                .antMatchers("/")
                 .permitAll()
                 .and()
             .formLogin()
                 .loginPage("/login")
+                .successHandler(customAuthenticationSuccessHandler())
                 .permitAll()
                 .and()
             .logout()
-                .permitAll();
+                .permitAll()
+            .and().csrf()
+            .and().requestCache();
+     
     }
 
-
+    @Bean
+    CustomeAuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+    	return new CustomeAuthenticationSuccessHandler();
+    }
     
     @Value("${spring.datasource.url}")
     String dsUrl;
@@ -64,9 +75,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	ds.setPassword(password);
     	
     	auth.jdbcAuthentication().dataSource(ds)
-    		
-    		.usersByUsernameQuery("select email as username, password_hash as password, email_validated as active from user where email=?")
-    		.authoritiesByUsernameQuery("SELECT email, role FROM lagdaemon.user join users_roles on users_roles.user_id = user.user_id join role on users_roles.role_id = role.role_id where user.email = ?")
+    		.usersByUsernameQuery("{CALL usersByUsernameQuery(?)}")
+    		.authoritiesByUsernameQuery("{CALL authoritiesByUsernameQuery(?)}")
     		.passwordEncoder(passwordEncoder());
     	
     	return ds;
@@ -82,6 +92,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	return new SecurityServiceImpl();
     }
 
-    
+    //@Bean
+    //public RecaptchaAuthenticationFilter recaptchaAuthenticationFilter() {
+    //	return new RecaptchaAuthenticationFilter();
+    //}
     
 }

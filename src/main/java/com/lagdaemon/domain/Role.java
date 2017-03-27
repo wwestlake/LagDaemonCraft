@@ -12,17 +12,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
+@Table(name = "Roles")
 public class Role {
 	public Role() {}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private long role_id;
+	private long id;
 
 	@Column(updatable = true, nullable = true, length=50)
 	private String role;

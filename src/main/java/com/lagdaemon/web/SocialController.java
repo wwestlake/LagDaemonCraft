@@ -49,8 +49,8 @@ public class SocialController {
         log.info("returning user profile");
         model.addAttribute("name", facebook.userOperations().getUserProfile().getName());
         return "hello";
-   }
-   
+    }
+    
     @RequestMapping(value = "/twitterInit", method=RequestMethod.GET)
     public String twitter(Model model) {
         if (connectionRepository.findPrimaryConnection(Twitter.class) == null) {

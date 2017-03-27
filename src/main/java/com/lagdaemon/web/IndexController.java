@@ -3,34 +3,14 @@ package com.lagdaemon.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.google.common.collect.ImmutableMap;
-import com.lagdaemon.service.EmailServiceImpl;
-
-import it.ozimov.springboot.mail.service.exception.CannotSendEmailException;
-
-import static org.assertj.core.api.Assertions.offset;
-
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.PagedList;
-import org.springframework.social.facebook.api.Post;
 import org.springframework.social.linkedin.api.LinkedIn;
 import org.springframework.social.linkedin.api.LinkedInProfile;
-import org.springframework.social.twitter.api.CursoredList;
 import org.springframework.social.twitter.api.Twitter;
-import org.springframework.social.twitter.api.TwitterProfile;
 
 @Controller
 public class IndexController {
@@ -60,6 +40,11 @@ public class IndexController {
 	@RequestMapping("/terms")
     String terms(Model model) {
 		return "/legal/websitetermsandconditions";
+    }
+
+	@RequestMapping("/test")
+    String test(Model model) {
+		return "/test";
     }
 
 	

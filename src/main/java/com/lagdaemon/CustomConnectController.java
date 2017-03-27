@@ -20,12 +20,12 @@ public class CustomConnectController extends ConnectController {
     //users to the page you need.
     @Override
     protected String connectedView(String providerId){
-        return "redirect:/";
+        return "redirect:/connect/" + providerId + "Connected";
     }
     //This connectView will be called if user disconnect from social media.  Here you can redirect 
     //them once they got disconnected.  
     @Override
     protected String connectView(String providerId) {
-        return "redirect:/" + providerId;
+        return "redirect:/connect/" + providerId + "Connect";
     }
 }

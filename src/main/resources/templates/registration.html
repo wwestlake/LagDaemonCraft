@@ -2,9 +2,34 @@
 <html
 	xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:form="http://www.springframework.org/tags/form"
   	layout:decorator="layout">
 <head>
   <title>Main</title>
+
+    <script type="text/javascript">
+    	function testCallback(response) {
+    		//alert(response);
+            //document.getElementById('recaptchaResponse').value = response;
+            $("#recaptchaResponse").val(response);
+    	}
+    
+    	var callback = function(response) {
+            document.getElementById('recaptchaResponse').value = response;
+            alert(response);
+    	}
+    	
+        var onloadCallback = function() {
+            grecaptcha.render('g-recaptcha', {
+                'sitekey' : '6LdpPxoUAAAAALjGhLIgrX8ExJPXrZOLBZOSvhFI',
+                'callback' : testCallback,
+                'theme' : 'dark'
+            });
+        }
+    </script>
+
+
+
 </head>
 <body>
   <section layout:fragment="content">
@@ -20,38 +45,51 @@
 					</H4>
 				</div>
 				<div class="col-sm-4">
-			        <div th:if="${param.error}">
-			            Invalid username and password.
-			        </div>
-			        <div th:if="${param.logout}">
-			            You have been logged out.
-			        </div>
-			        <form th:action="@{/registration}" method="post">
+			        <form  th:action="@{/registration}" method="post" th:object="${userForm}">
+				   <div  th:if="${#fields.hasErrors()}" class="alert alert-danger">
+			            <ul>
+			                <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+			                    <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+			                    <span th:text="${e.message}">The error message</span>
+			                </li>
+			            </ul>				   
+				   </div>	
+
 				  <div class="panel panel-default">
 				    <div class="panel-heading">Register</div>
 				    <div class="panel-body">			        
 
 					    <div class="form-group">
 					      <label for="email">Email:</label>
-					      <input type="email" class="form-control" id="email" name="email" placeholder="Enter email"></input>
+					      <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" th:value="*{email}"></input>
+					    </div>
+					    <div class="form-group">
+					      <label for="login">Login:</label>
+					      <input type="text" class="form-control" id="login" name="login" placeholder="Enter login id" th:value="*{login}"></input>
 					    </div>
 					    <div class="form-group">
 					      <label for="pwd">Password:</label>
-					      <input type="password" class="form-control" id="pwd" name="passwordHash" placeholder="Enter password"></input>
+					      <input type="password" class="form-control" id="pwd" name="passwordHash" placeholder="Enter password" th:value="*{passwordHash}"></input>
 					    </div>
 					    <div class="form-group">
 					      <label for="pwdcfm">Confirm Password:</label>
-					      <input type="password" class="form-control" id="pwdcfm" name="passwordConfirm" placeholder="Enter password again"></input>
+					      <input type="password" class="form-control" id="pwdcfm" name="passwordConfirm" placeholder="Enter password again" th:value="*{passwordConfirm}"></input>
 					    </div>
 					    <div class="checkbox">
-					      <label><input type="checkbox" name="agreeTermsAndConditions"></input>I agree to the <a class="text-warning" href="terms">Terms and Conditions</a> of LagDaemon Craft Web Site
-					      		
+					      <label><input type="checkbox" name="agreeTermsAndConditions" th:checked="*{agreeTermsAndConditions}"></input>I agree to the <a class="text-warning" href="terms">Terms and Conditions</a> of LagDaemon Craft Web Site
 					      </label>
+					      <br /><br />
+
+							<input type="hidden" id="recaptchaResponse" name="recaptchaResponse" value="" />
+							<div id="g-recaptcha"></div>
+
+
 					    </div>
 					    <button type="submit" class="btn btn-default" style="background:#004336;color:#FFFFFF">Create Account</button>
 					</div>
 					</div>
 			        </form>
+					<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&amp;render=explicit" async="async" defer="defer"></script>
 				</div>
 				<div class="col-sm-4">
 				</div>
