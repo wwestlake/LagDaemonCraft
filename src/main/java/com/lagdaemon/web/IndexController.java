@@ -47,6 +47,17 @@ public class IndexController {
 		return "/test";
     }
 
+
+	@RequestMapping("/donate/success")
+    String donate_success(Model model){
+		return "thankyou";
+	}
+
+	@RequestMapping("/donate/canceled")
+    String donate_cancel(Model model){
+		return "anothertime";
+	}
+
 	
 	@RequestMapping("/")
     String index(Model model){

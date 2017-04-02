@@ -2,9 +2,12 @@ package com.lagdaemon.domain.blog;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,5 +34,12 @@ public class ReferenceAuthor {
 	public String getLastName() { return this.lastName; }
 	public void setLastName(String value) { this.lastName = value; }
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "bibliographyId")
+	private Bibliography parent;
+	public Bibliography getParent() { return parent; }
+	public void setParent(Bibliography parent) { this.parent = parent; }
+
+	
 	
 }

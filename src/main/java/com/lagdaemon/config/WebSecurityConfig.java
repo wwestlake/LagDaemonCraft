@@ -41,8 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .logout()
                 .permitAll()
-            .and().csrf()
-            .and().requestCache();
+                .and().requestCache()
+            .and().csrf().disable();
      
     }
 

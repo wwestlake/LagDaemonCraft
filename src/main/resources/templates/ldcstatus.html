@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  	layout:decorator="layout">
+<head>
+  <title>Main</title>
+</head>
+<body>
+  <section layout:fragment="content">
+	<div class="container-fluid" >  
+	<img src="/favicon"></img><br/>
+	<H2>LagDaemon Craft Server Status</H2><br/>
+	<div th:if="${status}">
+		<h3><span th:text="${status.description.text}"></span></h3><br/>
+		<h3><span th:text="${status.version.name}"></span></h3><br/><br/>
+		<h3>There are currently <span th:text="${status.players.online}"></span> players
+		of a maximum <span th:text="${status.players.max}"></span> allowed.</h3>
+		<p th:text="${status.time}"></p>
+	</div>
+	<div th:unless="${status}">
+		Server is currently off line, please try back later
+	</div>
+
+
+	</div>
+  </section>
+</body>
+</html>

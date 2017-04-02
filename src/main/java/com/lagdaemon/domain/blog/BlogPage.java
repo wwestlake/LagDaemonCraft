@@ -16,10 +16,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.lagdaemon.domain.RecaptchaForm;
+import com.lagdaemon.domain.common.UserMetrics;
 
 @Entity
 @Table(name = "BlogPages")
-public class BlogPage extends RecaptchaForm  {
+public class BlogPage extends UserMetrics  {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

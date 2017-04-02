@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  	layout:decorator="layout">
+<head>
+  <title>User Admin</title>
+  
+<script>
+
+$(document).ready(function() {
+    $('#blog_tab').DataTable();
+} );
+
+$(".delete-button").click( function() {
+	
+});
+
+
+
+</script>  
+  
+</head>
+<body>
+  <section layout:fragment="content">
+	<div class="container-fluid" >  
+	<div class="well">
+		<B>Create Blog</B><br/><br/>	
+		<form class="form-inline" th:action="@{/blogadmin/create}" th:object="${blogForm}" method="post">
+		  <div class="form-group">
+		    <label for="title">Title:</label>
+		    <input type="text" class="form-control" id="title" name="title" th:value="*{title}" placeholder="Enter title"></input>
+		  </div>
+		  <div class="form-group">
+		    <label for="description">Description:</label>
+		    <input type="text" class="form-control" id="description" name="description" th:value="*{description}" placeholder="Enter description"></input>
+		  </div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+
+<table id="blog_tab" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created On</th>
+                <th>Published On</th>
+                <th>Is Published</th>
+                <th>Allow Comments</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
+                <th>Views</th>
+                <th>Operation</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Created On</th>
+                <th>Published On</th>
+                <th>Is Published</th>
+                <th>Allow Comments</th>
+                <th>Likes</th>
+                <th>Dislikes</th>
+                <th>Views</th>
+                <th>Operation</th>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr th:each="blog : ${blogList}">
+                <td th:text="${blog.author.email}"></td>
+                <td th:text="${blog.title}"></td>
+                <td th:text="${blog.description}"></td>
+                <td th:text="${blog.createdOn}"></td>
+                <td th:text="${blog.publishedOn}"></td>
+                <td th:text="${blog.isPublished}"></td>
+                <td th:text="${blog.allowComments}"></td>
+                <td th:text="${blog.likes}"></td>
+                <td th:text="${blog.dislikes}"></td>
+                <td th:text="${blog.userReads}"></td>
+                <td><A type="button" class="btn btn-warning" th:href="@{'/admin/blogedit/' + ${blog.blogId}}" >Edit</A>
+                    <button type="button" data-toggle="modal"  th:attr="data-target='#confirm-delete_' + ${blog.blogId}" class="btn btn-danger">Delete</button>
+					
+					<div class="modal fade" th:id="'confirm-delete_' + ${blog.blogId}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="vertical-alignment-helper">
+						    <div class="modal-dialog vertical-align-center">
+						        <div class="modal-content">
+						            <div class="modal-header">
+						                Delete Blog: <span th:text="${blog.title}" ></span>
+						            </div>
+						            <div class="modal-body">
+						            	<br/><br/><br/>
+						                This action will permanently delete the blog, do you want to continue?
+						                <br/><br/><br/>
+						            </div>
+						            <div class="modal-footer">
+						                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						                <a class="btn btn-danger btn-ok confirm-delete" th:href="@{'/blogadmin/delete/' + ${blog.blogId}}" >Delete</a>
+						            </div>
+						        </div>
+						    </div>
+					    </div>	
+					</div>
+				 </td>	
+			   </tr>
+            
+            
+        </tbody>
+    </table>
+	</div>
+
+	
+	
+  </section>
+</body>
+</html>

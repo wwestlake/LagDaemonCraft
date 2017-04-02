@@ -30,6 +30,7 @@ $(".delete-button").click( function() {
             <tr>
                 <th>Login</th>
                 <th>Email</th>
+                <th>Minecraft ID</th>
                 <th>Display Name</th>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -43,6 +44,7 @@ $(".delete-button").click( function() {
             <tr>
                 <th>Login</th>
                 <th>Email</th>
+                <th>Minecraft ID</th>
                 <th>Display Name</th>
                 <th>First Name</th>
                 <th>Last Name</th>
@@ -56,15 +58,17 @@ $(".delete-button").click( function() {
             <tr th:each="user : ${users}">
                 <td th:text="${user.login}"></td>
                 <td th:text="${user.email}"></td>
+                <td th:text="${user.minecraftId}"></td>
                 <td th:text="${user.displayName}"></td>
                 <td th:text="${user.firstName}"></td>
                 <td th:text="${user.lastName}"></td>
-                <td th:text="${user.emailValidated}"></td>
+                <td th:text="${user.emailValidated}? 'Yes' : 'No'"></td>
                 <td th:text="${user.lastLoginDateTime}"></td>
-                <td th:text="${user.locked}? 'Locked' : 'Active'"></td>
-                <td><A class="btn btn-warning" th:href="@{'/admin/useredit/' + ${user.Id}}">Edit</A>
+                <td th:text="${user.locked}? 'Locked' : 'Unlocked'"></td>
+                <td><A type="button" class="btn btn-warning" th:href="@{'/admin/useredit/' + ${user.Id}}" >Edit</A>
                     <button type="button" data-toggle="modal"  th:attr="data-target='#confirm-delete_' + ${user.Id}" class="btn btn-danger">Delete</button>
                 	<A class="btn btn-warning" th:href="@{'/admin/userlock/' + ${user.Id}}"><span th:text="${user.locked}? 'Unlock' : 'Lock'"></span></A></td>
+					
 					<div class="modal fade" th:id="'confirm-delete_' + ${user.Id}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 						<div class="vertical-alignment-helper">
 						    <div class="modal-dialog vertical-align-center">
@@ -85,7 +89,7 @@ $(".delete-button").click( function() {
 						    </div>
 					    </div>	
 					</div>
-            </tr>
+			   </tr>
             
             
         </tbody>

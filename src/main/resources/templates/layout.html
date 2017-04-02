@@ -97,6 +97,13 @@
 	<span sec:authorize="isAnonymous()">
 		Welcome Anonymous User
 	</span>
+
+				<form style="vertical-align: middle" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_s-xclick"/>
+				<input type="hidden" name="hosted_button_id" value="JQEZ8F2PBXPJA"/>
+				<input type="image" src="/images/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"/>
+				</form>
+
 	  
 		</h5>
 
@@ -119,7 +126,7 @@
 	        <li class="dropdown">
 	          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Minecraft<span class="caret"></span></a>
 	          <ul class="dropdown-menu">
-	            <li><a href="#">Server</a></li>
+	            <li><a href="/lagdaemoncraft">Server</a></li>
 	            <li><a href="#">Videos</a></li>
 	            <li><a href="#">Blog</a></li>
 	            <li><a href="#">Forum</a></li>
@@ -130,11 +137,11 @@
 	          <ul class="dropdown-menu">
 	            <li><a href="#">Benefits</a></li>
 	            <li><a href="#">Patreon</a></li>
-	            <li><a href="#">Paypal</a></li>
 	          </ul>
 	        </li>
 	        <li><a href="#">Contact</a></li>
 	      </ul>
+
 	      <ul th:if="${#authorization.expression('isAnonymous()')}" class="nav navbar-nav navbar-right">
 	        <li><a href="/registration"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
 	        <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
@@ -143,10 +150,11 @@
 
 	      <ul th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')}" class="nav navbar-nav navbar-right">
 	        <li class="dropdown">
-	          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Admin<span class="caret"></span></a>
+	          <a class="dropdown-toggle glyphicon glyphicon-cog" data-toggle="dropdown" href="#"> Admin<span class="caret"></span></a>
 	          <ul class="dropdown-menu">
 		        <li><a href="/configuration"><span class="glyphicon glyphicon-cog"></span> System Settings</a></li>
 	        	<li><a href="/useradmin"><span class="glyphicon glyphicon-user"></span> User Admin</a></li>
+	        	<li><a href="/blogadmin"><span class="glyphicon glyphicon-user"></span> Blog Admin</a></li>
 			  </ul>
 		    </li>		
 	      </ul>
@@ -159,7 +167,7 @@
 	      <ul th:if="${#authorization.expression('isAnonymous()')}" class="nav navbar-nav navbar-right">
 	        <li><a href="/manualEmailValidation"><span class="glyphicon glyphicon glyphicon-check"></span>Validate Email</a></li>
 	      </ul>
-      
+
 	    </div>
 	  </div>
 	</nav>

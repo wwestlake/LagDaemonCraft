@@ -80,7 +80,7 @@ public class User extends RecaptchaForm {
 	public Boolean getEmailValidated() { return emailValidated; }
 	public void setEmailValidated(Boolean value) { emailValidated = value; }
 
-	@Column(updatable = true, nullable = false, columnDefinition = "TINYINT(1)")
+	@Column(updatable = true, nullable = true, columnDefinition = "TINYINT(1)")
 	private Boolean locked;
 	public Boolean getLocked() { return locked; }
 	public void setLocked(Boolean value) { locked = value; }
