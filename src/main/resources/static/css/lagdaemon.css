@@ -104,7 +104,13 @@ footer {
     pointer-events:all;
 }
 
+  .carousel-inner > .item > iframe,
+  .carousel-inner > .item > a > iframe {
+      width: 70%;
+      margin: auto;
+  }
 
-
-
+.banner {
+    background-image: url('/images/banner.png');
+}
   

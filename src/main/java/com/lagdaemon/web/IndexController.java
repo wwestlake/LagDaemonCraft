@@ -58,6 +58,11 @@ public class IndexController {
 		return "anothertime";
 	}
 
+	@RequestMapping("/videos")
+    String videos(Model model){
+		return "videos";
+	}
+
 	
 	@RequestMapping("/")
     String index(Model model){

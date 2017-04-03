@@ -79,7 +79,7 @@
 </head>
 <body>
   <header>
-	<div class="container-fluid" style="position:relative;background-color:#004336;color:#fff;height:200px;">
+	<div class="container-fluid banner" style="position:relative;background-color:#004336;color:#ffff33;height:400px;">
 <!--         <img src="../static/images/FBcover1200x628.png" width="1000"
              th:src="@{images/FBcover1200x628.png}"/>
 -->             
@@ -90,7 +90,7 @@
          -->
          <h5 style="position: absolute;bottom:5px;float:right;">
 
-	<span sec:authorize="isAuthenticated()">
+	<span style="color:#ffff33;" sec:authorize="isAuthenticated()">
 		Logged user: <span sec:authentication="name">Bob</span>
 		Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
 	</span> 
@@ -98,11 +98,6 @@
 		Welcome Anonymous User
 	</span>
 
-				<form style="vertical-align: middle" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-				<input type="hidden" name="cmd" value="_s-xclick"/>
-				<input type="hidden" name="hosted_button_id" value="JQEZ8F2PBXPJA"/>
-				<input type="image" src="/images/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"/>
-				</form>
 
 	  
 		</h5>
@@ -118,16 +113,24 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>                        
 	      </button>
-	      <a class="navbar-brand" href="#">LagDaemon Craft</a>
+	      <a class="navbar-brand" href="/">
+	      
+				<form style="vertical-align: middle" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+				<input type="hidden" name="cmd" value="_s-xclick"/>
+				<input type="hidden" name="hosted_button_id" value="JQEZ8F2PBXPJA"/>
+				<input type="image" src="/images/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!"/>
+				</form>
+	      
+	      </a>
 	    </div>
 	    <div class="collapse navbar-collapse" id="main_nav_bar">
 	      <ul  class="nav navbar-nav">
-	        <li class="active"><a href="/">Home</a></li>
+	        <li><a href="/">Home</a></li>
 	        <li class="dropdown">
 	          <a class="dropdown-toggle" data-toggle="dropdown" href="#">Minecraft<span class="caret"></span></a>
 	          <ul class="dropdown-menu">
 	            <li><a href="/lagdaemoncraft">Server</a></li>
-	            <li><a href="#">Videos</a></li>
+	            <li><a href="/videos">Videos</a></li>
 	            <li><a href="#">Blog</a></li>
 	            <li><a href="#">Forum</a></li>
 	          </ul>
