@@ -5,7 +5,7 @@
 
 	<groupId>com.lagdaemon</groupId>
 	<artifactId>LagDaemonCraft</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>LagDaemonCraft</name>
@@ -58,8 +58,8 @@
 		<!-- https://mvnrepository.com/artifact/org.springframework.social/spring-social-facebook-web -->
 
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-social-facebook</artifactId>
+		    <groupId>org.springframework.social</groupId>
+		    <artifactId>spring-social-facebook</artifactId>
 			    
 		</dependency>
 			

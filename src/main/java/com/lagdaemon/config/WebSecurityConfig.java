@@ -3,10 +3,16 @@ package com.lagdaemon.config;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.UsersConnectionRepository;
+import org.springframework.social.connect.mem.InMemoryUsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInController;
 
 import com.lagdaemon.service.CustomeAuthenticationSuccessHandler;
 import com.lagdaemon.service.SecurityService;
@@ -25,7 +31,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-	 
+
 	
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -92,9 +98,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     	return new SecurityServiceImpl();
     }
 
-    //@Bean
-    //public RecaptchaAuthenticationFilter recaptchaAuthenticationFilter() {
-    //	return new RecaptchaAuthenticationFilter();
-    //}
+    
     
 }

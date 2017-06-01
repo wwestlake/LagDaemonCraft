@@ -11,8 +11,7 @@
   <section layout:fragment="content">
  		<h3>Connect to Facebook Custom</h3>
 		<form action="/connect/facebook" method="POST">
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-			<input type="hidden" name="scope" value="user_posts" />
+			<input type="hidden" name="scope" value="email" />
 			<div class="formInfo">
 				<p>Hi There! You aren't connected to Facebook yet. Click the button to connect this application with your Facebook account.</p>
 			</div>
