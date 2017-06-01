@@ -65,16 +65,6 @@ public class SocialController {
         model.addAttribute("name", twitter.userOperations().getUserProfile().getScreenName());
         return "/";
     }
-
-    @RequestMapping(value = "/linkedinInit", method=RequestMethod.GET)
-    public String linkedin(Model model) {
-        if (connectionRepository.findPrimaryConnection(LinkedIn.class) == null) {
-            return "redirect:/connect/linkedin";
-        }
-        LinkedInProfile profile = linkedin.profileOperations().getUserProfile();
-        model.addAttribute("name", profile.getFirstName() + " "  + profile.getLastName());
-        return "/";
-    }
     
     @RequestMapping(value = "/SocialConnect", method=RequestMethod.GET) 
     public String SocialConnect(Model model) { 
